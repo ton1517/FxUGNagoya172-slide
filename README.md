@@ -6,3 +6,6 @@ FxUG 第172回 勉強会＠名古屋
 
 スライドはmarkdownで書いて[markdown2impress](https://github.com/yoshiki/markdown2impress)で
 [impress.js](https://github.com/bartaz/impress.js)用のhtmlを生成しています。
+
+このスライドは以下のURLから見ることができます。
+[http://ton1517.github.com/FxUGNagoya172-slide/](http://ton1517.github.com/FxUGNagoya172-slide/)
