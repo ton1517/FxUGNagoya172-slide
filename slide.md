@@ -7,10 +7,18 @@ ActionScriptCompiler2.0 について
 [@ton1517](https://twitter.com/ton1517)
 
 こんにちは
-=========
+==========
 tonです
 ![ton1517 icon](images/profile_icon.png)
 [Twitter: @ton1517](https://twitter.com/ton1517)
+
+
+ActionScriptCompiler2.0挙動と新機能について話します
+=============================================================
+このスライドはActionScriptCompiler2.0 Preview3
+
+時点の情報を元にしています
+
 
 ActionScriptCompiler2.0って？
 ==============================
@@ -230,4 +238,221 @@ static constの初期化順序が変更
         trace(x);
     }
 
+このくらいでいいよね・・・
+-------------------------
 
+次は、**インライン展開**
+====================
+
+インライン展開って？
+===================
+
+インライン展開とは
+------------------
+関数の中身をそこに直接書いちゃえっていう機能
+
+こんな関数があるとき
+
+    function hoge():void{ this.a = 10; }
+
+普通に呼び出すと
+
+    function test():void{ hoge(); }
+
+インライン展開すると...
+
+    function test():void{ this.a = 10; }
+
+関数の中身がその場に展開される！
+
+インライン展開される条件
+-----------------------
+インライン展開させるにはいろいろな条件を満たさなければいけません
+
+#### *-check-*
+
+[Introducing ASC 2.0](http://www.bytearraysorg/?p=4789)
+
+[ASC2.0 のインライン化機能](http://cuaoar.jp/2012/08/asc20-actionscript.html)
+
+1. -inline コンパイラ引数
+-------------------------
+-inline という文字列をコンパイラ引数に追加してください
+
+これがないと絶対にインライン展開してくれません
+
+2. [Inline] メタタグ
+--------------------
+関数宣言の直前に [Inline] メタタグをつける
+
+getter/setterは[Inline]タグがなくてもインライン展開可能
+
+　
+------
+#### *-example-*
+    final public function get hoge():Number{
+        trace("この関数はインライン展開できます");
+        return _hoge;
+    }
+    final public function cannotInline():void{
+        trace("この関数はインライン展開されません");
+    }
+    [Inline]
+    final public function canInline():void{
+        trace("この関数はインライン展開できます");
+    }
+
+3. final/static修飾子
+---------------------
+インライン展開させたい関数/アクセサには必ずfinal修飾子かstatic修飾子をつける
+
+　
+------
+#### *-example-*
+    public function get hoge():Number{
+        trace("この関数はインライン展開されません");
+        return _hoge;
+    }
+    [Inline]
+    public function cannotInline():void{
+        trace("この関数はインライン展開されません");
+    }
+    [Inline]
+    static public function canInline():void{
+        trace("この関数はインライン展開できます");
+    }
+
+
+ex. final class の場合
+-----------------------
+クラスがfinalになっている場合、メソッドやアクセサにfinal/static修飾子をつけなくても
+インライン展開される
+
+ただしメソッドに[Inline]メタタグは必要
+
+
+4. ネストされた関数を持ってはいけない
+------------------------------------
+* 他のアクティベーションオブジェクトを持ってはいけない
+* 関数クロージャを持ってはいけない
+
+ということらしい
+
+要するにネストされた関数はダメってこと(多分)
+
+　
+------
+#### *-example-*
+    //インライン展開できません
+    [Inline]
+    final public function cannotInline():void{
+        var aa:Number = 10;
+         
+        var f:Function = function():void{
+            trace(aa);
+        }
+         
+        f();
+    }
+
+　
+------
+#### *-example-*
+    //これもダメです
+    [Inline]
+    final public function cannotInline2():void{
+        function buta():void{
+            trace("インライン展開できないよ");
+        }
+         
+        buta();
+    }
+
+　
+------
+#### *-example-*
+    private function methodHoge():void{
+        trace("ただのメソッドです");
+    }
+     
+    //他のメソッドを呼ぶだけならインライン展開可能
+    [Inline]
+    final public function canInline():void{
+        trace("インライン展開できます");
+        methodHoge();
+    }
+
+5. try-catch文を含めない
+------------------------
+関数の中にtry-catch文があるとインライン展開されません
+
+#### *-example-*
+    [Inline]
+    final public function tryTest():void{
+        try{
+            throw new Error("インライン展開できません");
+        }catch(e:Error){
+            trace(e.getStackTrace());
+        }
+    }
+
+6. with文を含めない
+-------------------
+with文を持つ関数はインライン展開できません
+#### *-example-*
+    [Inline]
+    final public function tryWith():void{
+        with(graphics){
+            beginFill(0x0077ff);
+            drawCircle(10, 10, 50);
+            endFill();
+        }
+    }
+
+7. 関数の中身のABCの行数が50以下であること
+------------------------------------------
+コンパイルした際のActionScriptByteCode(ABC)の行数が50以上になると
+インライン展開されなくなります
+
+*************************
+### ASC2.0 Preview 3 から
+[Inline]タグをつけた場合この制限は無視され、どんな大きい関数でもインライン展開される
+
+8. サブクラスまたはインターフェース経由で呼び出さない
+-----------------------------------------------
+サブクラスまたはインターフェース経由で呼び出した場合はインライン展開されません
+
+#### *-example-*
+    //これはインライン展開されます
+    var test2:ExInline = new ExInline();
+    test2.hoge();
+     
+    //これはインターフェース経由で呼び出しているのでインライン展開されません
+    var test:IInline = new ExInline();
+    test.hoge();
+
+とりあえず気をつけとくこと
+--------------------------
+
+* -inline コンパイラオプションを忘れずに
+* final修飾子と[Inline]タグをつける
+
+このくらい
+
+速度比較
+--------
+デモ。時間あれば
+
+
+ASC2.0楽しいよ！
+===============
+Monocleまだー？
+
+
+GitHub
+------
+このスライドはGitHubで公開しています。
+
+[https://github.com/ton1517/FxUGNagoya172-slide](https://github.com/ton1517/FxUGNagoya172-slide)
+
+[http://ton1517.github.com/FxUGNagoya172-slide/](http://ton1517.github.com/FxUGNagoya172-slide/)
