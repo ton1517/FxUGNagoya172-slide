@@ -18,7 +18,7 @@
 
 </div>
 <div class="step" data-y="0" data-x="1200">
-<h1>ActionScript Compiler 2.0 について</h1>
+<h1>ActionScriptCompiler2.0 について</h1>
 
 <p><a href="https://twitter.com/ton1517">@ton1517</a></p>
 
@@ -26,13 +26,13 @@
 <div class="step" data-y="0" data-x="2400">
 <h1>こんにちは</h1>
 
-<p>tonです。
-<img src="images/profile_icon.png" alt="ton1517 logo" />
+<p>tonです
+<img src="images/profile_icon.png" alt="ton1517 icon" />
 <a href="https://twitter.com/ton1517">Twitter: @ton1517</a></p>
 
 </div>
 <div class="step" data-y="0" data-x="3600">
-<h1>ActionScript Compiler 2.0って？</h1>
+<h1>ActionScriptCompiler2.0って？</h1>
 
 <p>長いからASC2.0って言うね</p>
 
@@ -70,7 +70,7 @@
 <h2>ASC2.0を使うには？</h2>
 
 <p><a href="http://www.adobe.com/cfusion/entitlement/index.cfm?e=labs_flashbuilder4-7">FlashBuilder4.7 Beta</a>
-をダウンロードしましょう。誰でもインストールできます。</p>
+をダウンロードしましょう。Betaなので誰でも無料で使えます。</p>
 
 <p>FB4.7にはASC2.0が同梱されておりデフォルトのコンパイラとなっている</p>
 
@@ -83,6 +83,271 @@
 <li>mxmlの実装はApache側のためまだまだ未実装</li>
 <li>AS3の挙動が一部異なる</li>
 </ul>
+
+</div>
+<div class="step" data-y="800" data-x="3600">
+<h1>ASC2.0でのAS3の挙動の変更点</h1>
+
+<p>コードの厳格化や最適化のために一部挙動が変更された</p>
+
+</div>
+<div class="step" data-y="800" data-x="4800">
+<h2>変更点</h2>
+
+<ul>
+<li>public,protected,private,default,internal,gotoがキーワードとして扱われる</li>
+<li>変数名の重複に対して厳格に</li>
+<li>定数の最適化、厳格化</li>
+<li>その他多数...</li>
+</ul>
+
+<p>いくつかピックアップしてみていきましょう</p>
+
+<h4><em>-check-</em></h4>
+
+<p><a href="http://helpx.adobe.com/flash-builder/actionscript-compiler-backward-compatibility.html">ActionScript Compiler 2.0 Backward Compatibility</a></p>
+
+<p><a href="http://cuaoar.jp/2012/08/actionscript-asc-20.html">ActionScript の新しいコンパイラ ASC 2.0 の変更点一覧</a></p>
+
+</div>
+<div class="step" data-y="1600" data-x="0">
+<h2>新たなキーワード</h2>
+
+<p>public,protected,private,default,internal,goto</p>
+
+<ul>
+<li>旧 : これらは変数名としても使用出来る</li>
+<li>新 : 変数名として使用できない</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>var mc:MovieClip = new MovieClip();
+mc.public = "publicだよ";
+mc.protected = "protectedだよ";
+mc.private = "privateだよ";
+mc.default = "defaultだよ";
+var internal:String = "internal";
+var goto:String = "goto";
+</code></pre>
+
+</div>
+<div class="step" data-y="1600" data-x="1200">
+<h2>変数の重複 1</h2>
+
+<p>関数の引数とローカル変数の重複を警告</p>
+
+<ul>
+<li>旧 : 警告なし</li>
+<li>新 : 警告される</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>function duplicate1 (foo:String):void {
+    var foo:String = "hugahuga";
+    trace(foo); 
+}
+</code></pre>
+
+</div>
+<div class="step" data-y="1600" data-x="2400">
+<h2>変数の重複 2</h2>
+
+<p>関数の引数とローカル定数の重複を禁止</p>
+
+<ul>
+<li>旧 : コンパイルされる</li>
+<li>新 : コンパイルエラー</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>function duplicate2 (foo:String):void {
+    const foo:String = "hugahuga";
+    trace(foo);
+}
+</code></pre>
+
+</div>
+<div class="step" data-y="1600" data-x="3600">
+<h2>変数の重複 3</h2>
+
+<p>forループ内での変数と定数の重複</p>
+
+<ul>
+<li>旧 : コンパイルされる</li>
+<li>新 : コンパイルエラー</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>for(var i:int = 0; i &lt; 3; i++){
+    const i:int = 100;
+    trace(i); 
+}
+</code></pre>
+
+</div>
+<div class="step" data-y="1600" data-x="4800">
+<h2>変数の重複</h2>
+
+<p>ASC2.0では</p>
+
+<ul>
+<li>全ての重複した定義を警告
+<ul>
+<li>旧 : 2つ目以降から警告</li>
+</ul></li>
+<li>constとvarの重複の禁止
+<ul>
+<li>旧 :エラーにならない。varはconstで上書きされる</li>
+</ul></li>
+</ul>
+
+</div>
+<div class="step" data-y="2400" data-x="0">
+<h2>名前空間</h2>
+
+<p>異なる名前空間で同名の名前をつけられるように</p>
+
+<ul>
+<li>旧 : コンパイルエラー</li>
+<li>新 : コンパイルされる</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>public function namespaceTest():void {
+    trace("public namespace");
+}
+private function namespaceTest():void {
+    trace("private namespace");
+}
+</code></pre>
+
+</div>
+<div class="step" data-y="2400" data-x="1200">
+<h2>Vector</h2>
+
+<p>Vectorの型指定は1つのみ</p>
+
+<p>複数指定した場合は</p>
+
+<ul>
+<li>旧 : 2つ目以降無視してコンパイルされる</li>
+<li>新 : 文法エラー</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>var vec:Vector.&lt;int, String, ASC2Test&gt;;
+vec = new Vector.&lt;int, String, ASC2Test&gt;();
+</code></pre>
+
+</div>
+<div class="step" data-y="2400" data-x="2400">
+<h2>定数のインクリメント</h2>
+
+<p>定数のインクリメントとデクリメントの禁止</p>
+
+<ul>
+<li>旧 : 定数でもインクリメントできる</li>
+<li>新 : コンパイルエラー</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>const i:int = 1;
+i++;
+</code></pre>
+
+</div>
+<div class="step" data-y="2400" data-x="3600">
+<h2>ローカル定数の初期化</h2>
+
+<p>ローカル定数の初期化タイミングが変更</p>
+
+<ul>
+<li>旧 : 宣言された行が実行されるタイミングで初期化</li>
+<li>新 : 宣言されたスコープに入ったタイミングで初期化</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>var hoge:int = foo;
+const foo:int = 10;
+hoge += foo;
+trace(hoge); 
+</code></pre>
+
+</div>
+<div class="step" data-y="2400" data-x="4800">
+<h2>定数の評価</h2>
+
+<p>多くの定数がコンパイル時に評価されるように</p>
+
+<ul>
+<li>旧 : 多くが実行時に評価</li>
+<li>新 : 多くがコンパイル時に評価</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>public static const NUM:int = 10 + 20;
+</code></pre>
+
+</div>
+<div class="step" data-y="3200" data-x="0">
+<h2>static constの初期化</h2>
+
+<p>static constの初期化順序が変更</p>
+
+<ul>
+<li>旧 : static constを持つクラスが呼ばれた時に初期化</li>
+<li>新 : ドキュメントクラスが呼び出される前に初期化</li>
+</ul>
+
+</div>
+<div class="step" data-y="3200" data-x="1200">
+<h2>複合代入演算子</h2>
+
+<p>複合代入演算子の左辺の評価は1度のみ</p>
+
+<ul>
+<li>旧 : 左辺が2度評価される場合がある</li>
+<li>新 : 左辺は1度のみ評価される</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>var obj:Object = new Object();
+obj.a = 0;
+function getObj():Object {
+    obj.a++;
+    return obj;
+}
+getObj().a += 10;
+</code></pre>
+
+</div>
+<div class="step" data-y="3200" data-x="2400">
+<h2>条件式での代入</h2>
+
+<p>条件式での代入に対して警告</p>
+
+<ul>
+<li>旧 : 警告なし</li>
+<li>新 : 警告あり</li>
+</ul>
+
+<h4><em>-example-</em></h4>
+
+<pre><code>var x:int = 0;
+if(x = 3){
+    trace(x);
+}
+</code></pre>
 
 </div>
 

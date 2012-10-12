@@ -1,18 +1,18 @@
 FxUG 第172回 勉強会＠名古屋
 ===========================
 
-ActionScript Compiler 2.0 について
+ActionScriptCompiler2.0 について
 ==================================
 
 [@ton1517](https://twitter.com/ton1517)
 
 こんにちは
 =========
-tonです。
-![ton1517 logo](images/profile_icon.png)
+tonです
+![ton1517 icon](images/profile_icon.png)
 [Twitter: @ton1517](https://twitter.com/ton1517)
 
-ActionScript Compiler 2.0って？
+ActionScriptCompiler2.0って？
 ==============================
 長いからASC2.0って言うね
 
@@ -21,7 +21,6 @@ ASC2.0とは
 * 元々Falconと呼ばれていた新しいActionScriptコンパイラを元にAdobeが開発したもの
 
 Falconコンパイラは現在Apacheに寄贈されオープンソースとして公開されています
-
 
 #### *-check-* 
 [GitHub Mirror of Apache Flex Falcon](https://github.com/apache/flex-falcon)
@@ -39,7 +38,7 @@ Falconコンパイラは現在Apacheに寄贈されオープンソースとし�
 ASC2.0を使うには？
 ------------------------------
 [FlashBuilder4.7 Beta](http://www.adobe.com/cfusion/entitlement/index.cfm?e=labs_flashbuilder4-7)
-をダウンロードしましょう。誰でもインストールできます。
+をダウンロードしましょう。Betaなので誰でも無料で使えます。
 
 FB4.7にはASC2.0が同梱されておりデフォルトのコンパイラとなっている
 
@@ -48,4 +47,187 @@ FB4.7にはASC2.0が同梱されておりデフォルトのコンパイラとな
 * バグがまだ多い
 * mxmlの実装はApache側のためまだまだ未実装
 * AS3の挙動が一部異なる
+
+
+ASC2.0でのAS3の挙動の変更点
+===========================
+コードの厳格化や最適化のために一部挙動が変更された
+
+変更点
+-------------
+* public,protected,private,default,internal,gotoがキーワードとして扱われる
+* 変数名の重複に対して厳格に
+* 定数の最適化、厳格化
+* その他多数...
+
+いくつかピックアップしてみていきましょう
+
+#### *-check-* 
+[ActionScript Compiler 2.0 Backward Compatibility](http://helpx.adobe.com/flash-builder/actionscript-compiler-backward-compatibility.html)
+
+[ActionScript の新しいコンパイラ ASC 2.0 の変更点一覧](http://cuaoar.jp/2012/08/actionscript-asc-20.html)
+
+新たなキーワード
+--------------------------------------
+public,protected,private,default,internal,goto
+
+* 旧 : これらは変数名としても使用出来る
+* 新 : 変数名として使用できない
+
+#### *-example-*
+    var mc:MovieClip = new MovieClip();
+    mc.public = "publicだよ";
+    mc.protected = "protectedだよ";
+    mc.private = "privateだよ";
+    mc.default = "defaultだよ";
+    var internal:String = "internal";
+    var goto:String = "goto";
+
+変数の重複 1
+------------
+関数の引数とローカル変数の重複を警告
+
+* 旧 : 警告なし
+* 新 : 警告される
+
+#### *-example-*
+    function duplicate1 (foo:String):void {
+        var foo:String = "hugahuga";
+        trace(foo); 
+    }
+
+変数の重複 2
+------------
+関数の引数とローカル定数の重複を禁止
+
+* 旧 : コンパイルされる
+* 新 : コンパイルエラー
+
+#### *-example-*
+    function duplicate2 (foo:String):void {
+        const foo:String = "hugahuga";
+        trace(foo);
+    }
+
+変数の重複 3
+------------
+forループ内での変数と定数の重複
+
+* 旧 : コンパイルされる
+* 新 : コンパイルエラー
+
+#### *-example-*
+    for(var i:int = 0; i < 3; i++){
+        const i:int = 100;
+        trace(i); 
+    }
+
+変数の重複
+----------
+ASC2.0では
+
+* 全ての重複した定義を警告
+    * 旧 : 2つ目以降から警告
+* constとvarの重複の禁止
+    * 旧 :エラーにならない。varはconstで上書きされる
+
+名前空間
+--------
+異なる名前空間で同名の名前をつけられるように
+
+* 旧 : コンパイルエラー
+* 新 : コンパイルされる
+
+#### *-example-*
+    public function namespaceTest():void {
+        trace("public namespace");
+    }
+    private function namespaceTest():void {
+        trace("private namespace");
+    }
+
+Vector
+------
+Vectorの型指定は1つのみ
+
+複数指定した場合は
+
+* 旧 : 2つ目以降無視してコンパイルされる
+* 新 : 文法エラー
+
+#### *-example-*
+    var vec:Vector.<int, String, ASC2Test>;
+    vec = new Vector.<int, String, ASC2Test>();
+
+定数のインクリメント
+-------------------
+定数のインクリメントとデクリメントの禁止
+
+* 旧 : 定数でもインクリメントできる
+* 新 : コンパイルエラー
+
+#### *-example-*
+    const i:int = 1;
+    i++;
+
+
+ローカル定数の初期化
+--------------------
+ローカル定数の初期化タイミングが変更
+
+* 旧 : 宣言された行が実行されるタイミングで初期化
+* 新 : 宣言されたスコープに入ったタイミングで初期化
+
+#### *-example-*
+    var hoge:int = foo;
+    const foo:int = 10;
+    hoge += foo;
+    trace(hoge); 
+
+定数の評価
+----------
+多くの定数がコンパイル時に評価されるように
+
+* 旧 : 多くが実行時に評価
+* 新 : 多くがコンパイル時に評価
+
+#### *-example-*
+    public static const NUM:int = 10 + 20;
+
+static constの初期化
+--------------------
+static constの初期化順序が変更
+
+* 旧 : static constを持つクラスが呼ばれた時に初期化
+* 新 : ドキュメントクラスが呼び出される前に初期化
+
+複合代入演算子
+--------------
+複合代入演算子の左辺の評価は1度のみ
+
+* 旧 : 左辺が2度評価される場合がある
+* 新 : 左辺は1度のみ評価される
+
+#### *-example-*
+    var obj:Object = new Object();
+    obj.a = 0;
+    function getObj():Object {
+        obj.a++;
+        return obj;
+    }
+    getObj().a += 10;
+
+条件式での代入
+--------------
+条件式での代入に対して警告
+
+* 旧 : 警告なし
+* 新 : 警告あり
+
+#### *-example-*
+    var x:int = 0;
+    if(x = 3){
+        trace(x);
+    }
+
 
