@@ -45,7 +45,7 @@
 <p>長いからASC2.0って言うね</p>
 
 </div>
-<div class="step" data-y="800" data-x="0">
+<div class="step" data-y="0" data-x="6000">
 <h2>ASC2.0とは</h2>
 
 <ul>
@@ -59,7 +59,7 @@
 <p><a href="https://github.com/apache/flex-falcon">GitHub Mirror of Apache Flex Falcon</a></p>
 
 </div>
-<div class="step" data-y="800" data-x="1200">
+<div class="step" data-y="0" data-x="7200">
 <h2>今までのと何がちがうの？</h2>
 
 <ul>
@@ -74,7 +74,7 @@
 <p><a href="http://labsdownload.adobe.com/pub/labs/flashplatformruntimes/air3-4/air3-4_p3_sdk_asc2_releasenotes.pdf">Adobe ActionScript Compiler 2.0 Release Notes</a></p>
 
 </div>
-<div class="step" data-y="800" data-x="2400">
+<div class="step" data-y="0" data-x="8400">
 <h2>ASC2.0を使うには？</h2>
 
 <p><a href="http://www.adobe.com/cfusion/entitlement/index.cfm?e=labs_flashbuilder4-7">FlashBuilder4.7 Beta</a>
@@ -83,7 +83,7 @@
 <p>FB4.7にはASC2.0が同梱されておりデフォルトのコンパイラとなっている</p>
 
 </div>
-<div class="step" data-y="800" data-x="3600">
+<div class="step" data-y="800" data-x="0">
 <h2>注意</h2>
 
 <ul>
@@ -93,13 +93,13 @@
 </ul>
 
 </div>
-<div class="step" data-y="800" data-x="4800">
+<div class="step" data-y="800" data-x="1200">
 <h1>ASC2.0でのAS3の挙動の変更点</h1>
 
 <p>コードの厳格化や最適化のために一部挙動が変更された</p>
 
 </div>
-<div class="step" data-y="1600" data-x="0">
+<div class="step" data-y="800" data-x="2400">
 <h2>変更点</h2>
 
 <ul>
@@ -118,7 +118,7 @@
 <p><a href="http://cuaoar.jp/2012/08/actionscript-asc-20.html">ActionScript の新しいコンパイラ ASC 2.0 の変更点一覧</a></p>
 
 </div>
-<div class="step" data-y="1600" data-x="1200">
+<div class="step" data-y="800" data-x="3600">
 <h2>新たなキーワード</h2>
 
 <p>public,protected,private,default,internal,goto</p>
@@ -140,7 +140,7 @@ var goto:String = "goto";
 </code></pre>
 
 </div>
-<div class="step" data-y="1600" data-x="2400">
+<div class="step" data-y="800" data-x="4800">
 <h2>変数の重複 1</h2>
 
 <p>関数の引数とローカル変数の重複を警告</p>
@@ -159,7 +159,7 @@ var goto:String = "goto";
 </code></pre>
 
 </div>
-<div class="step" data-y="1600" data-x="3600">
+<div class="step" data-y="800" data-x="6000">
 <h2>変数の重複 2</h2>
 
 <p>関数の引数とローカル定数の重複を禁止</p>
@@ -178,7 +178,7 @@ var goto:String = "goto";
 </code></pre>
 
 </div>
-<div class="step" data-y="1600" data-x="4800">
+<div class="step" data-y="800" data-x="7200">
 <h2>変数の重複 3</h2>
 
 <p>forループ内での変数と定数の重複</p>
@@ -197,7 +197,7 @@ var goto:String = "goto";
 </code></pre>
 
 </div>
-<div class="step" data-y="2400" data-x="0">
+<div class="step" data-y="800" data-x="8400">
 <h2>変数の重複</h2>
 
 <p>ASC2.0では</p>
@@ -214,7 +214,7 @@ var goto:String = "goto";
 </ul>
 
 </div>
-<div class="step" data-y="2400" data-x="1200">
+<div class="step" data-y="1600" data-x="0">
 <h2>名前空間</h2>
 
 <p>異なる名前空間で同名の名前をつけられるように</p>
@@ -235,7 +235,7 @@ private function namespaceTest():void {
 </code></pre>
 
 </div>
-<div class="step" data-y="2400" data-x="2400">
+<div class="step" data-y="1600" data-x="1200">
 <h2>Vector</h2>
 
 <p>Vectorの型指定は1つのみ</p>
@@ -254,7 +254,7 @@ vec = new Vector.&lt;int, String, ASC2Test&gt;();
 </code></pre>
 
 </div>
-<div class="step" data-y="2400" data-x="3600">
+<div class="step" data-y="1600" data-x="2400">
 <h2>定数のインクリメント</h2>
 
 <p>定数のインクリメントとデクリメントの禁止</p>
@@ -271,7 +271,7 @@ i++;
 </code></pre>
 
 </div>
-<div class="step" data-y="2400" data-x="4800">
+<div class="step" data-y="1600" data-x="3600">
 <h2>ローカル定数の初期化</h2>
 
 <p>ローカル定数の初期化タイミングが変更</p>
@@ -290,7 +290,7 @@ trace(hoge);
 </code></pre>
 
 </div>
-<div class="step" data-y="3200" data-x="0">
+<div class="step" data-y="1600" data-x="4800">
 <h2>定数の評価</h2>
 
 <p>多くの定数がコンパイル時に評価されるように</p>
@@ -306,7 +306,7 @@ trace(hoge);
 </code></pre>
 
 </div>
-<div class="step" data-y="3200" data-x="1200">
+<div class="step" data-y="1600" data-x="6000">
 <h2>static constの初期化</h2>
 
 <p>static constの初期化順序が変更</p>
@@ -317,7 +317,7 @@ trace(hoge);
 </ul>
 
 </div>
-<div class="step" data-y="3200" data-x="2400">
+<div class="step" data-y="1600" data-x="7200">
 <h2>複合代入演算子</h2>
 
 <p>複合代入演算子の左辺の評価は1度のみ</p>
@@ -339,7 +339,7 @@ getObj().a += 10;
 </code></pre>
 
 </div>
-<div class="step" data-y="3200" data-x="3600">
+<div class="step" data-y="1600" data-x="8400">
 <h2>条件式での代入</h2>
 
 <p>条件式での代入に対して警告</p>
@@ -358,19 +358,19 @@ if(x = 3){
 </code></pre>
 
 </div>
-<div class="step" data-y="3200" data-x="4800">
+<div class="step" data-y="2400" data-x="0">
 <h2>このくらいでいいよね・・・</h2>
 
 </div>
-<div class="step" data-y="4000" data-x="0">
+<div class="step" data-y="2400" data-x="1200">
 <h1>次は、<strong>インライン展開</strong></h1>
 
 </div>
-<div class="step" data-y="4000" data-x="1200">
+<div class="step" data-y="2400" data-x="2400">
 <h1>インライン展開って？</h1>
 
 </div>
-<div class="step" data-y="4000" data-x="2400">
+<div class="step" data-y="2400" data-x="3600">
 <h2>インライン展開とは</h2>
 
 <p>関数の中身をそこに直接書いちゃえっていう機能</p>
@@ -393,7 +393,7 @@ if(x = 3){
 <p>関数の中身がその場に展開される！</p>
 
 </div>
-<div class="step" data-y="4000" data-x="3600">
+<div class="step" data-y="2400" data-x="4800">
 <h2>インライン展開される条件</h2>
 
 <p>インライン展開させるにはいろいろな条件を満たさなければいけません</p>
@@ -405,7 +405,7 @@ if(x = 3){
 <p><a href="http://cuaoar.jp/2012/08/asc20-actionscript.html">ASC2.0 のインライン化機能</a></p>
 
 </div>
-<div class="step" data-y="4000" data-x="4800">
+<div class="step" data-y="2400" data-x="6000">
 <h2>1. -inline コンパイラ引数</h2>
 
 <p>-inline という文字列をコンパイラ引数に追加してください</p>
@@ -413,7 +413,7 @@ if(x = 3){
 <p>これがないと絶対にインライン展開してくれません</p>
 
 </div>
-<div class="step" data-y="4800" data-x="0">
+<div class="step" data-y="2400" data-x="7200">
 <h2>2. [Inline] メタタグ</h2>
 
 <p>関数宣言の直前に [Inline] メタタグをつける</p>
@@ -421,7 +421,7 @@ if(x = 3){
 <p>getter/setterは[Inline]タグがなくてもインライン展開可能</p>
 
 </div>
-<div class="step" data-y="4800" data-x="1200">
+<div class="step" data-y="2400" data-x="8400">
 <h2>　</h2>
 
 <h4><em>-example-</em></h4>
@@ -440,13 +440,13 @@ final public function canInline():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="4800" data-x="2400">
+<div class="step" data-y="3200" data-x="0">
 <h2>3. final/static修飾子</h2>
 
 <p>インライン展開させたい関数/アクセサには必ずfinal修飾子かstatic修飾子をつける</p>
 
 </div>
-<div class="step" data-y="4800" data-x="3600">
+<div class="step" data-y="3200" data-x="1200">
 <h2>　</h2>
 
 <h4><em>-example-</em></h4>
@@ -466,7 +466,7 @@ static public function canInline():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="4800" data-x="4800">
+<div class="step" data-y="3200" data-x="2400">
 <h2>ex. final class の場合</h2>
 
 <p>クラスがfinalになっている場合、メソッドやアクセサにfinal/static修飾子をつけなくても
@@ -475,7 +475,7 @@ static public function canInline():void{
 <p>ただしメソッドに[Inline]メタタグは必要</p>
 
 </div>
-<div class="step" data-y="5600" data-x="0">
+<div class="step" data-y="3200" data-x="3600">
 <h2>4. ネストされた関数を持ってはいけない</h2>
 
 <ul>
@@ -488,7 +488,7 @@ static public function canInline():void{
 <p>要するにネストされた関数はダメってこと(多分)</p>
 
 </div>
-<div class="step" data-y="5600" data-x="1200">
+<div class="step" data-y="3200" data-x="4800">
 <h2>　</h2>
 
 <h4><em>-example-</em></h4>
@@ -507,7 +507,7 @@ final public function cannotInline():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="5600" data-x="2400">
+<div class="step" data-y="3200" data-x="6000">
 <h2>　</h2>
 
 <h4><em>-example-</em></h4>
@@ -524,7 +524,7 @@ final public function cannotInline2():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="5600" data-x="3600">
+<div class="step" data-y="3200" data-x="7200">
 <h2>　</h2>
 
 <h4><em>-example-</em></h4>
@@ -542,7 +542,7 @@ final public function canInline():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="5600" data-x="4800">
+<div class="step" data-y="3200" data-x="8400">
 <h2>5. try-catch文を含めない</h2>
 
 <p>関数の中にtry-catch文があるとインライン展開されません</p>
@@ -560,7 +560,7 @@ final public function tryTest():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="6400" data-x="0">
+<div class="step" data-y="4000" data-x="0">
 <h2>6. with文を含めない</h2>
 
 <p>with文を持つ関数はインライン展開できません</p>
@@ -578,7 +578,7 @@ final public function tryWith():void{
 </code></pre>
 
 </div>
-<div class="step" data-y="6400" data-x="1200">
+<div class="step" data-y="4000" data-x="1200">
 <h2>7. 関数の中身のABCの行数が50以下であること</h2>
 
 <p>コンパイルした際のActionScriptByteCode(ABC)の行数が50以上になると
@@ -591,7 +591,7 @@ final public function tryWith():void{
 <p>[Inline]タグをつけた場合この制限は無視され、どんな大きい関数でもインライン展開される</p>
 
 </div>
-<div class="step" data-y="6400" data-x="2400">
+<div class="step" data-y="4000" data-x="2400">
 <h2>8. サブクラスまたはインターフェース経由で呼び出さない</h2>
 
 <p>サブクラスまたはインターフェース経由で呼び出した場合はインライン展開されません</p>
@@ -608,7 +608,7 @@ test.hoge();
 </code></pre>
 
 </div>
-<div class="step" data-y="6400" data-x="3600">
+<div class="step" data-y="4000" data-x="3600">
 <h2>とりあえず気をつけとくこと</h2>
 
 <ul>
@@ -619,19 +619,19 @@ test.hoge();
 <p>このくらい</p>
 
 </div>
-<div class="step" data-y="6400" data-x="4800">
+<div class="step" data-y="4000" data-x="4800">
 <h2>速度比較</h2>
 
 <p>デモ。時間あれば</p>
 
 </div>
-<div class="step" data-y="7200" data-x="0">
+<div class="step" data-y="4000" data-x="6000">
 <h1>ASC2.0楽しいよ！</h1>
 
 <p>Monocleまだー？</p>
 
 </div>
-<div class="step" data-y="7200" data-x="1200">
+<div class="step" data-y="4000" data-x="7200">
 <h2>GitHub</h2>
 
 <p>このスライドはGitHubで公開しています。</p>
