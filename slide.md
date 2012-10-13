@@ -80,7 +80,7 @@ ASC2.0でのAS3の挙動の変更点
 public,protected,private,default,internal,goto
 
 * 旧 : これらは変数名としても使用出来る
-* 新 : 変数名として使用できない
+* 新 : 変数名として使用できない (コンパイルエラー
 
 #### *-example-*
     var mc:MovieClip = new MovieClip();
@@ -101,7 +101,7 @@ public,protected,private,default,internal,goto
 #### *-example-*
     function duplicate1 (foo:String):void {
         var foo:String = "hugahuga";
-        trace(foo); 
+        trace(foo);  //hugahuga
     }
 
 変数の重複 2
@@ -114,7 +114,7 @@ public,protected,private,default,internal,goto
 #### *-example-*
     function duplicate2 (foo:String):void {
         const foo:String = "hugahuga";
-        trace(foo);
+        trace(foo); //旧:hugahuga, 新:実行できない
     }
 
 変数の重複 3
@@ -127,7 +127,7 @@ forループ内での変数と定数の重複
 #### *-example-*
     for(var i:int = 0; i < 3; i++){
         const i:int = 100;
-        trace(i); 
+        trace(i); //旧:100, 新:実行できない
     }
 
 変数の重複
@@ -177,6 +177,7 @@ Vectorの型指定は1つのみ
 #### *-example-*
     const i:int = 1;
     i++;
+    trace(i) //旧:2, 新:エラー
 
 
 ローカル定数の初期化
@@ -190,7 +191,7 @@ Vectorの型指定は1つのみ
     var hoge:int = foo;
     const foo:int = 10;
     hoge += foo;
-    trace(hoge); 
+    trace(hoge); //旧:10, 新:20
 
 定数の評価
 ----------
@@ -201,6 +202,8 @@ Vectorの型指定は1つのみ
 
 #### *-example-*
     public static const NUM:int = 10 + 20;
+    //旧:実行時に10+20で初期化
+    //新:コンパイル時に30にする
 
 static constの初期化
 --------------------
@@ -223,7 +226,7 @@ static constの初期化順序が変更
         obj.a++;
         return obj;
     }
-    getObj().a += 10;
+    getObj().a += 10; //旧:12, 新:11
 
 条件式での代入
 --------------
@@ -234,7 +237,7 @@ static constの初期化順序が変更
 
 #### *-example-*
     var x:int = 0;
-    if(x = 3){
+    if(x = 3){ //新:警告
         trace(x);
     }
 
@@ -347,11 +350,9 @@ ex. final class の場合
     [Inline]
     final public function cannotInline():void{
         var aa:Number = 10;
-         
         var f:Function = function():void{
             trace(aa);
         }
-         
         f();
     }
 
@@ -439,15 +440,25 @@ with文を持つ関数はインライン展開できません
 
 このくらい
 
+ちなみに
+--------
+ちゃんとインライン展開できてるか確認するには
+
+[SWF Investigator](http://labs.adobe.com/technologies/swfinvestigator/)
+
+使ってABCを確認すればよい
+
+
 速度比較
 --------
 デモ。時間あれば
-
 
 ASC2.0楽しいよ！
 ===============
 Monocleまだー？
 
+おわり。
+======
 
 GitHub
 ------
